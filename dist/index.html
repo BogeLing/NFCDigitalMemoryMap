@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* 防止滚动条出现 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            position: relative; /* 允许绝对定位的子元素参考 */
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 确保内容在左右两边 */
+            width: 100%;
+            height: 100%; /* 添加高度 */
+            padding: 0; /* 调整左右内边距 */
+            box-sizing: border-box; /* 确保padding不会影响宽度计算 */
+            position: relative; /* 确保子元素的定位相对于父容器 */
+            z-index: 1; /* 确保在图片之上 */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2; /* 确保模态窗口在图片和主容器之上 */
+            left: 0;
+            top: 10%;
+            width: 100%;
+            height: 80%;
+            overflow: hidden; /* 防止滚动条在模态窗口内出现 */
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            top: -10%;
+            width: 80%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 12%;
+            right: 25px;
+            color: #aaa;
+            font-size: 100px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        img.button-image {
+            cursor: pointer;
+            max-width: 10%; /* 调整图片大小 */
+            height: auto;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3; /* 确保图片在主容器之上 */
+        }
+
+        #openButton1 {
+            left: 1%; /* 调整左边距 */
+        }
+
+        #openButton2 {
+            right: 1%; /* 调整右边距 */
+        }
+
+        #canvas-container-modal {
+            width: 100%;
+            height: 80%;
+        }
+
+        #canvas-container-main {
+            width: 100%; /* 调整宽度，使其更大并居中 */
+            height: 100%;
+            position: relative;
+            z-index: 1; /* 确保在图片之上 */ 
+        }
+
+        #navigateButton {
+            position: absolute;
+            top: 12%; /* 调整按钮距顶部的距离 */
+            left: 20px; /* 调整按钮距左边的距离 */
+            padding: 10px 20px;
+            font-size: 42px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #navigateButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/index.2208d0da.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 使用图片作为按钮 -->
+        <img id="openButton1" src="/assets/sample.55a5338f.jpg" alt="Open 3D Model Viewer" class="button-image">
+        
+        <!-- 主页面的模型容器 -->
+        <div id="canvas-container-main" class="canvas-container"></div>
+        
+        <!-- 使用图片作为按钮 -->
+        <img id="openButton2" src="/assets/sample1.0718f20c.jpg" alt="Open 3D Model Viewer" class="button-image">
+    </div>
+
+    <!-- 模态窗口 -->
+    <div id="Modal1" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="canvas-container-modal"></div>
+            <!-- 新的导航按钮 -->
+            <button id="navigateButton">Make some comments!</button>            
+        </div>
+    </div>
+
+    
+</body>
+</html>

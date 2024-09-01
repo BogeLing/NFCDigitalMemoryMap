@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations on your graduation!</title>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* 防止滚动条出现 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            position: relative; /* 允许绝对定位的子元素参考 */
+            touch-action: manipulation; /* 允许滚动和点击，禁用双击和双指缩放 */
+            -ms-touch-action: manipulation; /* 兼容IE和旧版Edge浏览器 */
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 确保内容在左右两边 */
+            flex-direction: column; /* 垂直排列子元素 */
+            width: 100%;
+            height: 100%; /* 添加高度 */
+            padding: 0; /* 调整左右内边距 */
+            box-sizing: border-box; /* 确保padding不会影响宽度计算 */
+            position: relative; /* 确保子元素的定位相对于父容器 */
+            z-index: 1; /* 确保在图片之上 */
+
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2; /* 确保模态窗口在图片和主容器之上 */
+            left: 0;
+            top: 0%;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 防止滚动条在模态窗口内出现 */
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #1e327f;
+            margin: auto;
+            padding: 0;
+            top: 0%;
+            width: 100%;
+            height: 100%;
+            display: flex; /* 启用 flexbox 布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .close {
+            position: absolute;
+            top: calc(var(--source-background-width) * 0.15);
+            right: calc(var(--source-background-width) * 0.15);
+            color: #b71212;
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        img.button-image {
+            cursor: pointer;
+            height: auto;
+            position: absolute;
+            top: 0%;
+            transform: translateY(-50%);
+            z-index: 3; /* 确保图片在主容器之上 */
+        }
+
+        #openButtonCBSource,
+        #openButtonCBColoredSource {
+            max-width: calc(var(--source-background-width) * 0.35);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.09))
+                    translateX(calc(var(--source-background-width) * -0.18 ));
+        }
+
+        #CBExchangedSource{
+            max-width: calc(var(--source-background-width) * 0.42);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.09))
+                    translateX(calc(var(--source-background-width) * -0.15));
+        }
+
+        #openButtonPeopleSource,
+        #openButtonPeopleColoredSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.44))
+                    translateX(calc(var(--source-background-width) * 0.09));      
+            max-width: calc(var(--source-background-width) * 0.34);
+        }
+
+        #peopleExchangedSource{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.42))
+                    translateX(calc(var(--source-background-width) * 0.1));      
+            max-width: calc(var(--source-background-width) * 0.34);
+        }
+
+        #openButtonboatSource,
+        #openButtonboatColoredSource{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.32))
+                    translateX(calc(var(--source-background-width) * -0.16));
+            max-width: calc(var(--source-background-width) * 0.28);
+        }
+
+        #boatExchangedSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.34))
+                    translateX(calc(var(--source-background-width) * -0.12));
+            max-width: calc(var(--source-background-width) * 0.355);
+        }
+
+        #openButtonPavilionSource,
+        #openButtonPavilionColoredSource{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.05))
+                    translateX(calc(var(--source-background-width) * 0.22));
+            max-width: calc(var(--source-background-width) * 0.28);
+        }
+
+        #pavilionExchangedSource{
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.07))
+                    translateX(calc(var(--source-background-width) * 0.23));
+            max-width: calc(var(--source-background-width) * 0.32);
+        }
+
+        #openButtonNavigationSource,
+        #openButtonNavigationColoredSource,
+        #navigationExchangedSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.17))
+                    translateX(calc(var(--source-background-width) * -0.03));
+            max-width: calc(var(--source-background-width) * 0.16);
+        }
+
+        #navigationExchangedSource{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.15))
+                    translateX(calc(var(--source-background-width) * 0));
+            max-width: calc(var(--source-background-width) * 0.22);
+        }
+
+        #openButtonWisdomBarSource,
+        #openButtonWisdomBarColoredSource,
+        #wisdomBarExchangedSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.45))
+                    translateX(calc(var(--source-background-width) * -0.18));
+            max-width: calc(var(--source-background-width) * 0.37);
+        }
+
+        #wisdomBarExchangedSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.435))
+                    translateX(calc(var(--source-background-width) * -0.185));
+            max-width: calc(var(--source-background-width) * 0.37);
+        }
+
+        #openButtonGateSource,
+        #openButtonGateColoredSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.585))
+                    translateX(calc(var(--source-background-width) * 0.125));
+            max-width: calc(var(--source-background-width) * 0.15);
+        }
+
+        #gateExchangedSource{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.59))
+                    translateX(calc(var(--source-background-width) * 0.145));
+            max-width: calc(var(--source-background-width) * 0.20);
+        }
+        #openButtonGYMSource,
+        #openButtonGYMColoredSource,
+        #GYMExchangedSource {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.72))
+                    translateX(calc(var(--source-background-width) * -0.15));
+            max-width: calc(var(--source-background-width) * 0.4);
+        }
+
+
+
+        #canvas-container-modal {
+            width: 100%;
+            height: 100%;
+        }
+
+        #canvas-container-main {
+            width: 100%; /* 调整宽度，使其更大并居中 */
+            height: 100%;
+            position: relative;
+            z-index: 1; /* 确保在图片之上 */ 
+        }
+
+        #commentsButton {
+            position: absolute;
+            top: 83%; /* 调整按钮距顶部的距离 */
+            left: 50%; /* 调整按钮距左边的距离 */
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.55);    
+        }
+
+        #LeaveComments {
+            position: absolute;
+            top: 78%; /* 调整按钮距顶部的距离 */
+            left: 50%; /* 调整按钮距左边的距离 */
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.75);    
+        }
+
+        #BackTurnButton{
+            left: 12%; /* 调整右边距 */
+            top: 6%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.12);
+        }
+
+
+        #closeSourceModal{
+            left: 12%; /* 调整右边距 */
+            top: 6%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.12);
+        }
+
+        /* 打开模态窗口按钮样式 */
+
+        #openSourceModalButton {
+            left: 50%; /* 调整右边距 */
+            top: 2%;
+            z-index: 1;
+            transform: translate(-50%, -50%) translateX(calc(var(--source-background-width) * 0.38));
+            width: calc(var(--source-background-width) * 0.2);
+        }
+
+        #openSourceModalButton:hover {
+            background-color: #0056b3;
+        }
+
+        .exchange-icon {
+            position: absolute;
+            width: 1px; /* 根据需要调整大小 */
+            height: 1px; /* 根据需要调整大小 */
+            z-index: 2; /* 确保在其他元素之上 */
+            opacity: 0.9;
+        }
+
+        #slider {
+
+            z-index: 3;
+            width: 50%; /* 根据需要调整滑块的宽度 */
+            background: #f5cf46; /* 轨道的颜色 */
+            position: absolute;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * 0.82))
+                    translateX(calc(var(--source-background-width) * -0.21));
+            max-width: calc(var(--source-background-width) * 0.5);
+        }
+
+        #zoomInButton {
+            left: 68%; /* 调整右边距 */
+            top: 92%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.15);
+        }
+
+        #zoomOutButton {
+            left: 32%; /* 调整右边距 */
+            top: 92%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.15);
+        }
+
+        #zoomInButtonModal {
+            left:68%; /* 调整右边距 */
+            top: 92%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.15); 
+            -webkit-touch-callout: none; /* 禁用iOS长按弹出菜单 */
+            -webkit-user-select: none;   /* 禁止Safari用户选择文本 */
+            -khtml-user-select: none;    /* 禁止Konqueror用户选择文本 */
+            -moz-user-select: none;      /* 禁止Firefox用户选择文本 */
+            -ms-user-select: none;       /* 禁止Internet Explorer用户选择文本 */
+            user-select: none;           /* 禁止所有浏览器用户选择文本 */
+            touch-action: none;
+
+        }
+
+        #zoomOutButtonModal {
+
+            left: 32%; /* 调整右边距 */
+            top: 92%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.15);
+            -webkit-touch-callout: none; /* 禁用iOS长按弹出菜单 */
+            -webkit-user-select: none;   /* 禁止Safari用户选择文本 */
+            -khtml-user-select: none;    /* 禁止Konqueror用户选择文本 */
+            -moz-user-select: none;      /* 禁止Firefox用户选择文本 */
+            -ms-user-select: none;       /* 禁止Internet Explorer用户选择文本 */
+            user-select: none;           /* 禁止所有浏览器用户选择文本 */
+            touch-action: none;
+        }
+
+        #InformationUI{
+            left: 50%; /* 调整右边距 */
+            top: 18%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--main-background-width) * 0.4);
+            transform: translateX(calc(var(--source-background-width) * 0.08));
+            z-index: 7;
+        }
+
+        #Number {
+            position: absolute;
+            top: 76.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #f5cf46;
+            font-size: calc(var(--source-background-width) * 0.041);
+            font-family: Arial, sans-serif;
+            display: none;
+        }
+
+        #uniqueNumber{
+            top: 74%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.7);
+        }
+
+        #congrats{
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.95);
+        }
+
+        #mainGraduationIcon{
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--main-background-width) * 0.8);
+        }
+
+        #Boat {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #LiverpoolPavilion {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #Museum {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #Navigation {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #People {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #SportsCenter {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #TheGateOfWisdom {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #openButtonQRCodeSource{
+            
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) 
+                    translateY(calc(var(--source-background-width) * -0.76))
+                    translateX(calc(var(--source-background-width) * 0.14));
+            max-width: calc(var(--source-background-width) * 0.1);
+            display: none;
+        }
+
+        #XBar {
+            top: 14%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--source-background-width) * 0.8);
+        }
+
+        #backgroundPicture{
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* 使用id选择器设置图片样式 */
+        #information {
+            width: 80%; /* 确保图片宽度不超出容器 */
+            position: absolute;
+            z-index: 6;
+            display: none;
+            top: 50%;
+        }
+
+        #realbackgroundPicture{
+            position: absolute;
+            z-index: 1;
+            max-width: 150%;
+
+        }
+
+        #backgroundPicture{
+
+            z-index: 2;
+        }
+
+        #openButtonCB,
+        #openButtonCBColored,
+        #openButtonFB,
+        #openButtonFBColored,
+        #openButtonSB,
+        #openButtonSBColored,
+        #openButtonPavilion,
+        #openButtonPavilionColored,
+        #openButtonGYM,
+        #openButtonGYMColored,
+        #openButtonHS,
+        #openButtonHSColored,
+        #openButtonWisdomBar,
+        #openButtonWisdomBarColored,
+        #openButtonNavigation2,
+        #openButtonNavigation2Colored {
+            display: none; /* 设置所有选择器的 display 属性为 none */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <img id="mainGraduationIcon" src="./pictures/mianGraduationIcon.svg" alt="Open 3D Model Viewer" class="button-image">
+        <a href="https://mp.weixin.qq.com/s/9Y7j1mlkaam72Puzv5yx6w">
+            <img id="InformationUI" src="./pictures/informationUI.svg" alt="Open 3D Model Viewer" class="button-image">
+        </a>
+        <img id="openButtonCB" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonCBColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonFB" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonFBColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonSB" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonSBColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonPavilion" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonPavilionColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="information" src="pictures/rules.jpg" class="button-image">
+        
+        <!-- 主页面的模型容器 -->
+        <div id="canvas-container-main" class="canvas-container"></div>
+
+        <img id="openButtonGYM" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonGYMColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonHS" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonHSColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonWisdomBar" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonWisdomBarColored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonNavigation2" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+        <img id="openButtonNavigation2Colored" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+
+    </div>
+
+
+
+
+    <!-- 按钮 -->
+    <img id="openSourceModalButton" src="./pictures/exchangeButton.svg" alt="Open 3D Model Viewer" class="button-image">
+
+    <!-- 缩放按钮 -->
+    
+    <img id="zoomInButton" src="./pictures/zoomIn.svg" class="button-image">
+    <img id="zoomOutButton" src="./pictures/zoomOut.svg" class="button-image">
+
+
+    <!-- 资源模态窗口 -->
+    <div id="sourceModal" class="modal">
+        <div class="modal-content">
+            <img id="backgroundPicture" src="./pictures/background2.jpg">
+            <img id="realbackgroundPicture" src="./pictures/background4.jpg">
+            <!-- 关闭按钮 -->
+            <img id="closeSourceModal" src="./pictures/216436_arrow_back_icon.svg" class="button-image">
+            <img id="openButtonCBSource" src="./pictures/CBBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonCBColoredSource" src="./pictures/CBColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonPeopleSource" src="./pictures/peopleBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonPeopleColoredSource" src="./pictures/peopleColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonboatSource" src="./pictures/boatBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonboatColoredSource" src="./pictures/boatColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonPavilionSource" src="./pictures/pavilionBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonPavilionColoredSource" src="./pictures/pavilionColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonNavigationSource" src="./pictures/navigationBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonNavigationColoredSource" src="./pictures/navigationColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonWisdomBarSource" src="./pictures/wisdomBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonWisdomBarColoredSource" src="./pictures/wisdomBarColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonGateSource" src="./pictures/gateBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonGateColoredSource" src="./pictures/gateColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonGYMSource" src="./pictures/GYMBlack.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonGYMColoredSource" src="./pictures/GYMColored.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="openButtonQRCodeSource" src="./pictures/qrcode.jpg" alt="QR Code Image" class="button-image">
+
+            <img id="peopleExchangedSource" src="./pictures/peopleExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="CBExchangedSource" src="./pictures/CBExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="boatExchangedSource" src="./pictures/boatExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="gateExchangedSource" src="./pictures/gateExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="GYMExchangedSource" src="./pictures/GYMExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="navigationExchangedSource" src="./pictures/navigationExchanged.jpg" alt="Open 3D Model Viewer" class="button-image">
+            <img id="pavilionExchangedSource" src="./pictures/pavilionExchanged.png" alt="Open 3D Model Viewer" class="button-image">
+            <img id="wisdomBarExchangedSource" src="./pictures/wisdomBarExchanged.jpg" alt="Open 3D Model Viewer" class="button-image">
+
+
+            <!-- 模板exchange图标 -->
+            <img id="exchange-template" src="./pictures/Exchanged.png" alt="Exchange Icon" style="display: none ;" class="exchange-icon">
+            <!-- 结算资源按钮 -->
+            <button id="ExchangeResourcesButton">Confirm Exchange</button>
+            <!-- 滑块 -->
+            <input type="range" min="0" max="100" value="0" id="slider">
+
+        </div>
+    </div>
+
+    <!-- 模态窗口 -->
+    <div id="Modal" class="modal">
+        
+        <div class="modal-content">
+
+            <img id="Boat" src="./pictures/Boat.svg" alt="Boat" class="button-image">
+            <img id="LiverpoolPavilion" src="./pictures/LiverpoolPavilion.svg" alt="Liverpool Pavilion" class="button-image">
+            <img id="Museum" src="./pictures/Museum.svg" alt="Museum" class="button-image">
+            <img id="Navigation" src="./pictures/Navigation.svg" alt="Navigation" class="button-image">
+            <img id="People" src="./pictures/People.svg" alt="People" class="button-image">
+            <img id="SportsCenter" src="./pictures/SportsCenter.svg" alt="Sports Center" class="button-image">
+            <img id="TheGateOfWisdom" src="./pictures/TheGateOfWisdom.svg" alt="The Gate Of Wisdom" class="button-image">
+            <img id="XBar" src="./pictures/XBar.svg" alt="XBar" class="button-image">
+
+            <!-- 关闭按钮 -->
+            <img id="BackTurnButton" src="./pictures/216436_arrow_back_icon.svg" class="button-image">
+            <div id="canvas-container-modal"></div>
+            <div id="Number"></div> 
+            <!-- 评论按钮 -->
+            <img id="commentsButton" src="./pictures/MessageBoard.svg" class="button-image">
+            <img id="LeaveComments" src="./pictures/LeaveComments.svg" class="button-image">
+            <!-- 缩放按钮 -->
+            <img id="zoomInButtonModal" src="./pictures/zoomIn.svg" class="button-image">
+            <img id="zoomOutButtonModal" src="./pictures/zoomOut.svg" class="button-image">
+
+            <img id="uniqueNumber" src="./pictures/Number.svg" class="button-image">
+            <img id="congrats" src="./pictures/Congrats.svg" class="button-image">
+            
+                       
+        </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
